@@ -65,11 +65,13 @@ void loop() {
 
 
 void Iniciar(){
-
+  
   int iSequencia = 0;
+  long fatorRandom = 0; 
 
   while(1){
     if((digitalRead(BTN_AMARELO) == LOW) or (digitalRead(BTN_AZUL) == LOW) or (digitalRead(BTN_VERDE) == LOW) or (digitalRead(BTN_VERMELHO) == LOW) ){
+      randomSeed(fatorRandom); // Inicializa o gerador de números pseudoaleatórios de acordo com o momento que o usuario iniciar o jogo 
       return;
     } 
     digitalWrite(sequencia[iSequencia], HIGH); 
@@ -79,7 +81,10 @@ void Iniciar(){
     iSequencia++;
     if (iSequencia == 4)
      iSequencia = 0;
+    
+    fatorRandom++; 
   }
+
 }
 
 void JogandoPisca(int _num){
