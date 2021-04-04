@@ -4,6 +4,8 @@
 #define VERDE 2
 #define VERMELHO 3
 
+#define BUZZER 13
+
 #define BTN_AMARELO 8
 #define BTN_AZUL 9
 #define BTN_VERDE 10
@@ -11,6 +13,9 @@
 
 const int sequencia[] = {AMARELO, AZUL, VERDE, VERMELHO};
 
+int melody[] = {
+  300, 600, 900, 1200, 1500, 1800, 2100, 2700
+};
 
 void setup() {
  pinMode(AMARELO, OUTPUT);  
@@ -61,6 +66,8 @@ void loop() {
     delay(1000);
 
   Jogando();
+
+  Perdeu();
 }
 
 
@@ -89,7 +96,17 @@ void Iniciar(){
 
 void JogandoPisca(int _num){
   digitalWrite(_num, HIGH); 
-  delay(500);            
+  
+  if (_num == AMARELO)
+    tone(BUZZER, 264, 250);
+  else if (_num == AZUL)  
+    tone(BUZZER, 330, 250);
+  else if (_num == VERDE)  
+    tone(BUZZER, 396, 250);
+  else if (_num == VERMELHO)  
+    tone(BUZZER, 495, 250);
+  
+  delay(250);            
   digitalWrite(_num, LOW);
   delay(500);    
 }
@@ -138,6 +155,24 @@ void Jogando(){
     }
     iJogador++;
   }
+}
+
+void Perdeu(){
+    bool EstadoLED = false;
+    for(int i=0; i<=7;i++){
+      digitalWrite(AMARELO, EstadoLED); 
+      digitalWrite(AZUL, EstadoLED); 
+      digitalWrite(VERDE, EstadoLED); 
+      digitalWrite(VERMELHO, EstadoLED); 
+      tone(BUZZER, melody[i], 250);
+      EstadoLED = !EstadoLED;
+      delay(500);
+    }
+    digitalWrite(AMARELO, LOW); 
+    digitalWrite(AZUL, LOW); 
+    digitalWrite(VERDE, LOW); 
+    digitalWrite(VERMELHO, LOW); 
+    delay(500);
 }
 
 
